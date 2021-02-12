@@ -1,16 +1,26 @@
 <template lang="pug">
-
-  Reto1
-
+  #app
+    h1 {{ msg }}
+    p {{ 1 * 2}}
+    p {{ 'Hola' + 'Mundo' }}
+    p {{ person.name }}
+    p {{ person.name.toUpperCase() }}
+    p {{ JSON.stringify(person) }}
+    p {{ true ? 'true' : 'false' }}
 </template>
 
 <script>
-import Reto1 from '@/components/Reto1'
 
 export default {
   name: 'App',
-  components: {
-    Reto1
+  data () {
+    return {
+      msg: 'Hola Vue',
+
+      person: {
+        name: 'Eric'
+      }
+    }
   }
 }
 </script>
