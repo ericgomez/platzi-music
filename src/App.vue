@@ -6,7 +6,7 @@
     pm-loader(v-show="isLoading")
 
     section.section(v-show="!isLoading")
-      nav.nav.has-shadow
+      nav.nav
         .container
           input.input.is-large(type="text", placeholder="Buscar canciones", v-model="searchQuery")
           a.button.is-info.is-large(@click="search") Buscar
@@ -19,7 +19,7 @@
       .container.results
         .columns.is-multiline
           .column.is-one-quarter(v-for="t in tracks")
-            PmTrack(:track="t")
+            PmTrack(:class="{ 'is-active' : t.id === selectedTrack }", :track="t", @select="setSelectedTrack")
 
     pm-footer
 
@@ -41,7 +41,9 @@ export default {
       searchQuery: '',
       tracks: [],
 
-      isLoading: false
+      isLoading: false,
+
+      selectedTrack: ''
     }
   },
 
@@ -62,6 +64,9 @@ export default {
           this.tracks = res.tracks.items
           this.isLoading = false
         })
+    },
+    setSelectedTrack (id) {
+      this.selectedTrack = id
     }
   }
 }
@@ -73,4 +78,9 @@ export default {
   .results {
     margin-top: 50px;
   }
+
+  .is-active {
+    border: 3px #23d160 solid;
+  }
+
 </style>
