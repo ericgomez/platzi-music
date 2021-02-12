@@ -1,15 +1,16 @@
-<template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <h1>Hola mundo!</h1>
-  </div>
+<template lang="pug">
+
+  Reto1
+
 </template>
 
 <script>
+import Reto1 from '@/components/Reto1'
 
 export default {
   name: 'App',
   components: {
+    Reto1
   }
 }
 </script>
