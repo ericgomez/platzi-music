@@ -3,7 +3,9 @@
 
     pm-header
 
-    section.section
+    pm-loader(v-show="isLoading")
+
+    section.section(v-show="!isLoading")
       nav.nav.has-shadow
         .container
           input.input.is-large(type="text", placeholder="Buscar canciones", v-model="searchQuery")
@@ -15,26 +17,31 @@
           small {{ searchMessage }}
 
       .container.results
-        .columns
-          .column(v-for="t in tracks")
-            | {{ t.name }} - {{ t.artists[0].name }}
+        .columns.is-multiline
+          .column.is-one-quarter(v-for="t in tracks")
+            PmTrack(:track="t")
 
     pm-footer
 
 </template>
 
 <script>
-import trackService from './services/track'
-import PmHeader from './components/layout/Header'
-import PmFooter from './components/layout/Footer'
+import trackService from '@/services/track'
+import PmHeader from '@/components/layout/Header'
+import PmFooter from '@/components/layout/Footer'
+
+import PmTrack from '@/components/Track'
+import PmLoader from '@/components/shared/Loader'
 
 export default {
   name: 'App',
-  components: { PmHeader, PmFooter },
+  components: { PmHeader, PmFooter, PmTrack, PmLoader },
   data () {
     return {
       searchQuery: '',
-      tracks: []
+      tracks: [],
+
+      isLoading: false
     }
   },
 
@@ -48,9 +55,12 @@ export default {
     search () {
       if (!this.searchQuery) { return } // Validamos si intentan buscar con el campo vacío
 
+      this.isLoading = true
+
       trackService.search(this.searchQuery)
         .then(res => {
           this.tracks = res.tracks.items
+          this.isLoading = false
         })
     }
   }
