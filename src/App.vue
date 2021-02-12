@@ -1,9 +1,11 @@
 <template lang="pug">
   #app
     input(v-model="name")
-    input(v-model="lastName")
 
-    p {{ fullName }}
+    button(v-on:click="format") Format
+    button(@click="format") Format
+
+    p {{ formattedName }}
 </template>
 
 <script>
@@ -13,19 +15,13 @@ export default {
   data () {
     return {
       name: '',
-      lastName: ''
+      formattedName: ''
     }
   },
 
-  computed: {
-    fullName () {
-      return `${this.name} ${this.lastName}`
-    }
-  },
-
-  watch: {
-    name (newVal, oldVal) {
-      console.log(newVal, oldVal)
+  methods: {
+    format () {
+      this.formattedName = this.name.split(' ').join('-').toUpperCase()
     }
   }
 }
