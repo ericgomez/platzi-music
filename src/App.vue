@@ -3,6 +3,9 @@
 
     pm-header
 
+    pm-notification(v-show="showNotification")
+      p(slot="body") No se encontraron resultados
+
     pm-loader(v-show="isLoading")
 
     section.section(v-show="!isLoading")
@@ -33,15 +36,18 @@ import PmFooter from '@/components/layout/Footer'
 import PmTrack from '@/components/Track'
 import PmLoader from '@/components/shared/Loader'
 
+import PmNotification from '@/components/shared/Notification'
+
 export default {
   name: 'App',
-  components: { PmHeader, PmFooter, PmTrack, PmLoader },
+  components: { PmHeader, PmFooter, PmTrack, PmLoader, PmNotification },
   data () {
     return {
       searchQuery: '',
       tracks: [],
 
       isLoading: false,
+      showNotification: false,
 
       selectedTrack: ''
     }
@@ -53,6 +59,16 @@ export default {
     }
   },
 
+  watch: {
+    showNotification () {
+      if (this.showNotification) {
+        setTimeout(() => {
+          this.showNotification = false
+        }, 3000)
+      }
+    }
+  },
+
   methods: {
     search () {
       if (!this.searchQuery) { return } // Validamos si intentan buscar con el campo vacío
@@ -61,6 +77,7 @@ export default {
 
       trackService.search(this.searchQuery)
         .then(res => {
+          this.showNotification = res.tracks.total === 0 // Validamos tracks.total desde la api
           this.tracks = res.tracks.items
           this.isLoading = false
         })
