@@ -1,5 +1,5 @@
 const configService = {
-  apiUrl: 'http://platzi-music.now.sh'
+  apiUrl: 'https://platzi-music-api.herokuapp.com'
 }
 
 export default configService
